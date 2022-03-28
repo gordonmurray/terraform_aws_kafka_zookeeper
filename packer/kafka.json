@@ -1,0 +1,38 @@
+{
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile": "{{user `profile`}}",
+            "region": "{{user `region`}}",
+            "source_ami": "{{user `base_ami_id`}}",
+            "instance_type": "t3.large",
+            "force_deregister": "true",
+            "force_delete_snapshot": "true",
+            "ssh_username": "ubuntu",
+            "ami_name": "{{user `application_name`}}",
+            "ami_regions": [
+                "{{user `region`}}"
+            ],
+            "tags": {
+                "Name": "{{user `application_name`}}"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt update",
+                "sudo apt-get install openjdk-8-jdk -y",
+                "wget https://mirrors.estointernet.in/apache/kafka/3.1.0/kafka_2.13-3.1.0.tgz",
+                "tar -xvzf kafka_2.13-3.1.0.tgz",
+                "mv kafka_2.13-3.1.0 kafka"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "../files/server.properties",
+            "destination": "/home/kafka/config/server.properties"
+        }
+    ]
+}

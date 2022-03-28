@@ -1,0 +1,39 @@
+{
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile": "{{user `profile`}}",
+            "region": "{{user `region`}}",
+            "source_ami": "{{user `base_ami_id`}}",
+            "instance_type": "m5.large",
+            "force_deregister": "true",
+            "force_delete_snapshot": "true",
+            "ssh_username": "ubuntu",
+            "ami_name": "{{user `application_name`}}",
+            "ami_regions": [
+                "{{user `region`}}"
+            ],
+            "tags": {
+                "Name": "{{user `application_name`}}"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt update",
+                "sudo apt-get install openjdk-8-jdk -y",
+                "wget https://mirrors.estointernet.in/apache/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0.tar.gz",
+                "tar -xvzf apache-zookeeper-3.8.0.tar.gz",
+                "mv apache-zookeeper-3.8.0 zookeeper",
+                "mv zookeeper/conf/zoo_sample.cfg zookeeper/conf/zoo.cfg"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "../files/zoo.cfg",
+            "destination": "zookeeper/conf/zoo.cfg"
+        }
+    ]
+}
