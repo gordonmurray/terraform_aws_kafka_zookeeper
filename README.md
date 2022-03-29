@@ -1,6 +1,45 @@
 # Terraform AWS Kafka
 Create a kafka cluster on AWS using Terraform
 
+# Requirements
+
+* An AWS Account
+* [Packer](https://www.packer.io/) - to build AMIs - Tested with version 1.8.0
+* [Terraform](https://www.terraform.io/) - to create the Kafka and zookeeper ec2 instances from the AMIs - Tested with version 0.14.10
+
+# Installation
+
+First you will need to create the zookeeper and kafka AMIs using packer.
+
+From within the /packer folder, update variables.json to suit your AWS region and then run:
+
+### Validate an image file(S)
+
+```
+packer validate -var-file=variables.json zookeeper.json
+packer validate -var-file=variables.json kafka.json
+```
+
+### Build the image(s)
+
+```
+packer build -var-file=variables.json zookeeper.json
+packer build -var-file=variables.json kafka.json
+```
+
+Once the AMIs have been created, use Terraform to create the Zookeeper and Kafka clusters:
+
+### Plan
+
+```
+terraform init && terraform plan
+```
+
+### Apply
+
+```
+terraform init && terraform apply
+```
 
 
 ## Cost estimate

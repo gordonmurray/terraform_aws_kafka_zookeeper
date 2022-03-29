@@ -37,3 +37,13 @@ resource "aws_security_group_rule" "zookeeper_ingress_1" {
   security_group_id = aws_security_group.zookeeper.id
   description       = "Self"
 }
+
+resource "aws_security_group_rule" "zookeeper_ingress_2" {
+  type                     = "ingress"
+  from_port                = 2181
+  to_port                  = 2181
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.kafka.id
+  security_group_id        = aws_security_group.zookeeper.id
+  description              = "Self"
+}
