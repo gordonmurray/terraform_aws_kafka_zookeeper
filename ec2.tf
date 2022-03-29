@@ -46,7 +46,7 @@ resource "aws_instance" "kafka" {
   key_name                = aws_key_pair.pem-key.key_name
   subnet_id               = var.vpc_subnets[count.index]
   vpc_security_group_ids  = [aws_security_group.kafka.id]
-  disable_api_termination = true
+  disable_api_termination = false
   instance_type           = var.instance_type_kafka
   count                   = 3
 
@@ -72,9 +72,9 @@ resource "aws_instance" "kafka" {
 resource "aws_instance" "zookeeper" {
   ami                     = data.aws_ami.zookeeper.id
   key_name                = aws_key_pair.pem-key.key_name
-  subnet_id               = var.vpc_subnets[count.index]
+  subnet_id               = var.vpc_subnets[0]
   vpc_security_group_ids  = [aws_security_group.zookeeper.id]
-  disable_api_termination = true
+  disable_api_termination = false
   instance_type           = var.instance_type_zookeeper
   count                   = 3
 
