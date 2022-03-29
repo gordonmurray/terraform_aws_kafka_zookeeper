@@ -34,8 +34,8 @@
                 "sudo adduser --system --home /home/kafka  --shell /bin/bash --uid 820  --group --disabled-login kafka",
                 "sudo curl https://mirrors.estointernet.in/apache/kafka/3.1.0/kafka_2.13-3.1.0.tgz -o /home/kafka/kafka.tgz",
                 "sudo tar -xvzf /home/kafka/kafka.tgz",
-                "sudo mv kafka_2.13-3.1.0/ kafka",
-                "sudo chown -R kafka:kafka kafka",
+                "sudo mv /home/ubuntu/kafka_2.13-3.1.0/ /home/kafka/kafka",
+                "sudo chown -R kafka:kafka /home/kafka",
                 "sudo mv /home/ubuntu/kafka.service /etc/systemd/system/kafka.service",
                 "sudo systemctl daemon-reload",
                 "sudo systemctl enable --now kafka.service"
