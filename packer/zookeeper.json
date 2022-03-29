@@ -25,28 +25,30 @@
             "destination": "/home/ubuntu/zookeeper.service"
         },
         {
+            "type": "file",
+            "source": "./files/zoo.cfg",
+            "destination": "/home/ubuntu/zoo.cfg"
+        },
+        {
             "type": "shell",
             "inline": [
+                "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
                 "sudo apt update",
                 "sudo apt -y install openjdk-11-jre-headless",
                 "sudo adduser --system --home /opt/zookeeper --shell /bin/bash --uid 810  --group --disabled-login zookeeper",
                 "sudo -u zookeeper mkdir /opt/zookeeper/software",
-                "sudo -u zookeeper wget  --quiet --directory-prefix /opt/zookeeper/software https://downloads.apache.org/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz",
-                "sudo -u zookeeper wget  --quiet --directory-prefix /opt/zookeeper/software https://downloads.apache.org/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz.asc",
+                "sudo -u zookeeper wget --quiet --directory-prefix /opt/zookeeper/software https://downloads.apache.org/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz",
+                "sudo -u zookeeper wget --quiet --directory-prefix /opt/zookeeper/software https://downloads.apache.org/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz.asc",
                 "sudo -u zookeeper gpg --keyserver keyserver.ubuntu.com --recv-key AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66",
-                "sudo -u zookeeper gpg --verify /opt/zookeeper/software/{apache-zookeeper-3.7.0-bin.tar.gz.asc,apache-zookeeper-3.7.0-bin.tar.gz}",
+                "sudo -u zookeeper gpg --verify /opt/zookeeper/software/apache-zookeeper-3.7.0-bin.tar.gz.asc",
                 "sudo -u zookeeper mkdir /opt/zookeeper/zookeeper",
                 "sudo -u zookeeper tar --directory /opt/zookeeper/zookeeper --strip-components 1 --extract --file /opt/zookeeper/software/apache-zookeeper-3.7.0-bin.tar.gz",
                 "sudo -u zookeeper mkdir /opt/zookeeper/zookeeper/data",
                 "sudo mv /home/ubuntu/zookeeper.service /etc/systemd/system/zookeeper.service",
+                "sudo mv /home/ubuntu/zoo.cfg /opt/zookeeper/zookeeper/conf/zoo.cfg",
                 "sudo systemctl daemon-reload",
                 "sudo systemctl enable --now zookeeper.service"
             ]
-        },
-        {
-            "type": "file",
-            "source": "./files/zoo.cfg",
-            "destination": "/opt/zookeeper/zookeeper/conf/zoo.cfg"
         }
     ]
 }
