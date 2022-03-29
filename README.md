@@ -3,7 +3,7 @@ Create a kafka cluster on AWS using Terraform
 
 
 
-# Cost estimate
+## Cost estimate
 
 Cost estimate provider by Infracost
 
