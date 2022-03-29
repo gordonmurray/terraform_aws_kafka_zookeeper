@@ -9,30 +9,41 @@
             "force_deregister": "true",
             "force_delete_snapshot": "true",
             "ssh_username": "ubuntu",
-            "ami_name": "{{user `application_name`}}",
+            "ami_name": "kafka",
             "ami_regions": [
                 "{{user `region`}}"
             ],
             "tags": {
-                "Name": "{{user `application_name`}}"
+                "Name": "kafka"
             }
         }
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "inline": [
-                "sudo apt update",
-                "sudo apt-get install openjdk-8-jdk -y",
-                "wget https://mirrors.estointernet.in/apache/kafka/3.1.0/kafka_2.13-3.1.0.tgz",
-                "tar -xvzf kafka_2.13-3.1.0.tgz",
-                "mv kafka_2.13-3.1.0 kafka"
-            ]
+            "type": "file",
+            "source": "./files/kafka.service",
+            "destination": "/home/ubuntu/kafka.service"
         },
         {
             "type": "file",
-            "source": "../files/server.properties",
-            "destination": "/home/kafka/config/server.properties"
+            "source": "./files/zoo.cfg",
+            "destination": "/home/ubuntu/zoo.cfg"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+                "sudo apt update",
+                "sudo apt -y install openjdk-11-jre-headless",
+                "sudo adduser --system --home /home/kafka  --shell /bin/bash --uid 820  --group --disabled-login kafka",
+                "sudo curl https://mirrors.estointernet.in/apache/kafka/3.1.0/kafka_2.13-3.1.0.tgz -o /home/kafka/kafka.tgz",
+                "sudo tar -xvzf /home/kafka/kafka.tgz",
+                "sudo mv kafka_2.13-3.1.0/ kafka",
+                "sudo chown -R kafka:kafka kafka",
+                "sudo mv /home/ubuntu/kafka.service /etc/systemd/system/kafka.service",
+                "sudo systemctl daemon-reload",
+                "sudo systemctl enable --now kafka.service"
+            ]
         }
     ]
 }
