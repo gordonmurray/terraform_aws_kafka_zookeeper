@@ -14,7 +14,7 @@ data "aws_ami" "kafka" {
 data "template_file" "kafka_user_data" {
   template = file("files/kafka.tpl")
   vars = {
-    zookeeper_address = ""
+    zookeeper_address = aws_instance.zookeeper.0.public_ip
   }
 }
 
@@ -34,9 +34,6 @@ data "aws_ami" "zookeeper" {
 # Prepare user_data via a template file
 data "template_file" "zookeeper_user_data" {
   template = file("files/zookeeper.tpl")
-  vars = {
-    zookeeper_address = ""
-  }
 }
 
 
