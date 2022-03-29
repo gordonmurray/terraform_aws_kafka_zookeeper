@@ -41,6 +41,9 @@ terraform init && terraform plan
 terraform init && terraform apply
 ```
 
+The end result is a multi node kafka cluster and a Zookeeper ensemble, ready to develop on.
+
+![Kafka and Zookeeper nodes](files/kafka.png)
 
 ## Cost estimate
 
