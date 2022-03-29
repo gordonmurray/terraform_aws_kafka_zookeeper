@@ -26,6 +26,11 @@
             "destination": "/home/ubuntu/kafka.service"
         },
         {
+            "type": "file",
+            "source": "./files/server.properties",
+            "destination": "/home/ubuntu/server.properties"
+        },
+        {
             "type": "shell",
             "inline": [
                 "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
@@ -37,6 +42,7 @@
                 "sudo mv /home/ubuntu/kafka_2.13-3.1.0/ /home/kafka/kafka",
                 "sudo chown -R kafka:kafka /home/kafka",
                 "sudo mv /home/ubuntu/kafka.service /etc/systemd/system/kafka.service",
+                "sudo mv -f /home/ubuntu/server.properties /home/kafka/kafka/config/server.properties",
                 "sudo systemctl daemon-reload",
                 "sudo systemctl enable --now kafka.service"
             ]
