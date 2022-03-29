@@ -24,3 +24,8 @@ variable "instance_type_zookeeper" {
   default     = "t3.medium"
   description = "Instance types to use for zookeeper ec2 instances"
 }
+
+variable "my_ip_address" {
+  type        = string
+  description = "Your own IP for SSH access"
+}
