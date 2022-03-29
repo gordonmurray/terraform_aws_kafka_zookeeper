@@ -56,12 +56,12 @@ resource "aws_instance" "kafka" {
     volume_size           = "50"
 
     tags = {
-      Name = "terraform_aws_kafka"
+      Name = "kafka ${count.index}"
     }
   }
 
   tags = {
-    Name = "terraform_aws_kafka"
+    Name = "kafka ${count.index}"
   }
 
   user_data = data.template_file.kafka_user_data.rendered
@@ -84,12 +84,12 @@ resource "aws_instance" "zookeeper" {
     volume_size           = "50"
 
     tags = {
-      Name = "terraform_aws_kafka"
+      Name = "zookeeper ${count.index}"
     }
   }
 
   tags = {
-    Name = "terraform_aws_kafka"
+    Name = "zookeeper ${count.index}"
   }
 
   user_data = data.template_file.zookeeper_user_data.rendered
