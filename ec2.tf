@@ -14,7 +14,7 @@ data "aws_ami" "kafka" {
 data "template_file" "kafka_user_data" {
   template = file("files/kafka.tpl")
   vars = {
-    zookeeper_address = aws_instance.zookeeper.0.public_ip
+    zookeeper_address = "zookeeper1.${var.domain_name}"
   }
 }
 
@@ -84,7 +84,8 @@ resource "aws_instance" "zookeeper" {
   }
 
   user_data = base64encode(templatefile("files/zookeeper.tpl", {
-    id = count.index + 1
+    id          = count.index + 1
+    domain_name = var.domain_name
   }))
 
 }
