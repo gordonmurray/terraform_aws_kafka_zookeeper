@@ -31,12 +31,6 @@ data "aws_ami" "zookeeper" {
 
 }
 
-# Prepare user_data via a template file
-data "template_file" "zookeeper_user_data" {
-  template = file("files/zookeeper.tpl")
-}
-
-
 # Create Kafka instance(s)
 resource "aws_instance" "kafka" {
   ami                     = data.aws_ami.kafka.id
@@ -89,6 +83,8 @@ resource "aws_instance" "zookeeper" {
     Name = "zookeeper ${count.index}"
   }
 
-  user_data = data.template_file.zookeeper_user_data.rendered
+  user_data = base64encode(templatefile("files/zookeeper.tpl", {
+    id = count.index + 1
+  }))
 
 }
