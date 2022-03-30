@@ -1,6 +1,10 @@
 resource "aws_route53_zone" "domain" {
   name    = var.domain_name
   comment = "staging"
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_route53_record" "zookeeper_1" {
