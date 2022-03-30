@@ -13,7 +13,7 @@ First you will need to create the zookeeper and kafka AMIs using packer.
 
 From within the /packer folder, update variables.json to suit your AWS region and then run:
 
-### Validate an image file(S)
+### Validate an image file(s)
 
 ```
 packer validate -var-file=variables.json zookeeper.json
