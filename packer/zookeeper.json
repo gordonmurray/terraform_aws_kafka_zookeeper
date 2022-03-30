@@ -48,7 +48,7 @@
                 "sudo mv /home/ubuntu/zookeeper.service /etc/systemd/system/zookeeper.service",
                 "sudo mv /home/ubuntu/zoo.cfg /opt/zookeeper/zookeeper/conf/zoo.cfg",
                 "sudo systemctl daemon-reload",
-                "sudo systemctl enable --now zookeeper.service"
+                "sudo systemctl enable zookeeper.service"
             ]
         }
     ]
