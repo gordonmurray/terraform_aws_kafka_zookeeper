@@ -40,9 +40,9 @@ resource "aws_security_group_rule" "zookeeper_egress_1" {
 
 resource "aws_security_group_rule" "zookeeper_ingress_1" {
   type              = "ingress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "tcp"
+  from_port         = -1
+  to_port           = -1
+  protocol          = "all"
   self              = true
   security_group_id = aws_security_group.zookeeper.id
   description       = "Self"
@@ -59,6 +59,26 @@ resource "aws_security_group_rule" "zookeeper_ingress_2" {
 }
 
 resource "aws_security_group_rule" "zookeeper_ingress_3" {
+  type                     = "ingress"
+  from_port                = 2888
+  to_port                  = 2888
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.zookeeper.id
+  security_group_id        = aws_security_group.zookeeper.id
+  description              = "Self"
+}
+
+resource "aws_security_group_rule" "zookeeper_ingress_4" {
+  type              = "ingress"
+  from_port         = 3888
+  to_port           = 3888
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.zookeeper.id
+  description       = "Public"
+}
+
+resource "aws_security_group_rule" "zookeeper_ingress_5" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
