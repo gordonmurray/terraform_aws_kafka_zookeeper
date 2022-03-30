@@ -29,3 +29,8 @@ variable "my_ip_address" {
   type        = string
   description = "Your own IP for SSH access"
 }
+
+variable "domain_name" {
+  type        = string
+  description = "The domain name to use for DNS records"
+}
