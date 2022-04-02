@@ -10,14 +10,6 @@ data "aws_ami" "kafka" {
   owners = [var.aws_ami_account_id]
 }
 
-# Prepare user_data via a template file
-data "template_file" "kafka_user_data" {
-  template = file("files/kafka.tpl")
-  vars = {
-    zookeeper_address = "zookeeper1.${var.domain_name}"
-  }
-}
-
 # Get the zookeeper AMI created by Packer
 data "aws_ami" "zookeeper" {
   most_recent = true
@@ -29,6 +21,14 @@ data "aws_ami" "zookeeper" {
 
   owners = [var.aws_ami_account_id]
 
+}
+
+# Prepare user_data via a template file
+data "template_file" "kafka_user_data" {
+  template = file("files/kafka.tpl")
+  vars = {
+    zookeeper_address = "zookeeper1.${var.domain_name}"
+  }
 }
 
 # Create Kafka instance(s)
@@ -49,6 +49,11 @@ resource "aws_instance" "kafka" {
     tags = {
       Name = "kafka ${count.index}"
     }
+  }
+
+  metadata_options {
+    http_tokens   = "required"
+    http_endpoint = "enabled"
   }
 
   tags = {
@@ -77,6 +82,11 @@ resource "aws_instance" "zookeeper" {
     tags = {
       Name = "zookeeper ${count.index}"
     }
+  }
+
+  metadata_options {
+    http_tokens   = "required"
+    http_endpoint = "enabled"
   }
 
   tags = {
